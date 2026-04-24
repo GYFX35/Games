@@ -25,7 +25,12 @@ import {
   Tablet,
   Monitor,
   Wifi,
-  HardDrive
+  HardDrive,
+  Telescope,
+  Radio,
+  Brain,
+  Signal,
+  Globe
 } from 'lucide-react';
 import { cn } from './lib/utils';
 
@@ -288,6 +293,28 @@ const GuruTools = () => {
   const [aiInput, setAiInput] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [telecomData, setTelecomData] = useState<any>(null);
+  const [astroData, setAstroData] = useState<any>(null);
+
+  const fetchTelecomStatus = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/telecom/status');
+      const data = await response.json();
+      setTelecomData(data);
+    } catch (error) {
+      console.error('Telecom Status Error:', error);
+    }
+  };
+
+  const fetchAstroTelemetry = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/astro/telemetry');
+      const data = await response.json();
+      setAstroData(data);
+    } catch (error) {
+      console.error('Astro Telemetry Error:', error);
+    }
+  };
 
   const askGuruAi = async () => {
     if (!aiInput.trim()) return;
@@ -321,6 +348,174 @@ const GuruTools = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <h2 className="text-3xl font-extrabold text-slate-900 mb-8">Guru Innovation Suite</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-8">
+        {/* AI Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <Brain className="w-6 h-6 text-indigo-400" />
+            <h3 className="text-xl font-bold">AI Strategist</h3>
+          </div>
+
+          <div className="mb-4 grid grid-cols-2 gap-2">
+            <div className="bg-slate-800/50 p-2 rounded border border-slate-700">
+              <span className="text-[10px] text-slate-500 block uppercase">Inference Speed</span>
+              <span className="text-xs font-mono text-emerald-400">124 tokens/s</span>
+            </div>
+            <div className="bg-slate-800/50 p-2 rounded border border-slate-700">
+              <span className="text-[10px] text-slate-500 block uppercase">Model</span>
+              <span className="text-xs font-mono text-indigo-400">Gemini 1.5 Pro</span>
+            </div>
+          </div>
+
+          <textarea
+            className="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none h-24 mb-4"
+            placeholder="Describe your tech stack problem..."
+            value={aiInput}
+            onChange={(e) => setAiInput(e.target.value)}
+          />
+
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="text-[10px] text-slate-400">API Status: Online</span>
+            </div>
+            <span className="text-[10px] text-slate-500">v4.0.2-stable</span>
+          </div>
+
+          <button
+            onClick={askGuruAi}
+            disabled={isLoading || !aiInput.trim()}
+            className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-700 disabled:cursor-not-allowed rounded-lg font-semibold transition-colors flex items-center justify-center"
+          >
+            {isLoading ? (
+              <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              'Synthesize Strategy'
+            )}
+          </button>
+          {aiResponse && (
+            <div className="mt-4 p-3 bg-slate-800 border-l-4 border-indigo-500 text-xs font-mono max-h-32 overflow-y-auto">
+              {aiResponse}
+            </div>
+          )}
+        </div>
+
+        {/* Telecom Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-2">
+            <Signal className="w-4 h-4 text-rose-500 animate-ping opacity-50" />
+          </div>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Radio className="w-6 h-6 text-rose-400" />
+              <h3 className="text-xl font-bold">Telecom Nexus</h3>
+            </div>
+            <button
+              onClick={fetchTelecomStatus}
+              className="p-1 hover:bg-slate-800 rounded transition-colors"
+              title="Refresh Status"
+            >
+              <Zap className="w-4 h-4 text-amber-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="bg-slate-800/40 p-3 rounded-lg border border-slate-700">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Network Load</span>
+                <span className="text-xs font-mono text-rose-400">{telecomData?.network_load || '74%'}</span>
+              </div>
+              <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div className="bg-rose-500 h-full transition-all duration-500" style={{ width: telecomData?.network_load || '74%' }} />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">5G Nodes</span>
+                <span className="text-sm font-bold">{telecomData?.['5g_nodes']?.toLocaleString() || '14,209'}</span>
+              </div>
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">6G Testing</span>
+                <span className="text-sm font-bold text-emerald-400">{telecomData?.['6g_status'] || 'Active'}</span>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs px-1">
+                <div className="flex items-center space-x-2">
+                  <Globe className="w-3 h-3 text-rose-400" />
+                  <span className="text-slate-300">Global Latency</span>
+                </div>
+                <span className="font-mono text-white">{telecomData?.global_latency || '24ms'}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs px-1">
+                <div className="flex items-center space-x-2">
+                  <Zap className="w-3 h-3 text-amber-400" />
+                  <span className="text-slate-300">Spectrum Auth</span>
+                </div>
+                <span className="text-emerald-400">Verified</span>
+              </div>
+            </div>
+
+            <button className="w-full py-2 bg-rose-600/20 hover:bg-rose-600/30 border border-rose-600/50 rounded-lg text-xs font-semibold text-rose-400 transition-all">
+              Manage Cellular Mesh
+            </button>
+          </div>
+        </div>
+
+        {/* Astronomy Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Telescope className="w-6 h-6 text-indigo-400" />
+              <h3 className="text-xl font-bold">AstroLink</h3>
+            </div>
+            <button
+              onClick={fetchAstroTelemetry}
+              className="p-1 hover:bg-slate-800 rounded transition-colors"
+              title="Poll Telemetry"
+            >
+              <Search className="w-4 h-4 text-indigo-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between text-[10px] text-slate-500 uppercase">
+              <span>Deep Space Telemetry</span>
+              <span className="text-indigo-400">Receiving...</span>
+            </div>
+
+            <div className="space-y-2">
+              {[
+                { label: 'Orbital Objects', value: astroData?.orbital_objects?.toLocaleString() || '18,492', icon: Globe },
+                { label: 'Data Downlink', value: astroData?.data_downlink || '4.2 TB/s', icon: Signal },
+                { label: 'Active Arrays', value: astroData?.active_arrays || '128', icon: Radio }
+              ].map((stat, i) => (
+                <div key={i} className="flex items-center justify-between bg-slate-800/40 p-2 rounded border border-slate-700/50">
+                  <div className="flex items-center space-x-2">
+                    <stat.icon className="w-3 h-3 text-indigo-400" />
+                    <span className="text-xs text-slate-300">{stat.label}</span>
+                  </div>
+                  <span className="text-xs font-mono text-white">{stat.value}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-2">
+              <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                <span>Constellation Sync</span>
+                <span>{astroData?.constellation_sync || '100%'}</span>
+              </div>
+              <div className="w-full bg-slate-800 h-1 rounded-full">
+                <div className="bg-indigo-400 h-full rounded-full shadow-[0_0_8px_rgba(129,140,248,0.5)] transition-all duration-1000" style={{ width: astroData?.constellation_sync || '100%' }} />
+              </div>
+            </div>
+
+            <button className="w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-600/50 rounded-lg text-xs font-semibold text-indigo-400 transition-colors">
+              Access Observatories
+            </button>
+          </div>
+        </div>
+
         {/* Automotive Innovation */}
         <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
           <div className="flex items-center space-x-2 mb-6">
@@ -444,6 +639,108 @@ const GuruTools = () => {
           </div>
         </div>
 
+        {/* Blockchain Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <LinkIcon className="w-6 h-6 text-emerald-400" />
+            <h3 className="text-xl font-bold">Chain Explorer</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Network</span>
+              <span className="text-emerald-400 font-mono">Mainnet-v2</span>
+            </div>
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Gas Price</span>
+              <span className="text-white font-mono">12 Gwei</span>
+            </div>
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Block Height</span>
+              <span className="text-white font-mono">18,234,091</span>
+            </div>
+            <div className="mt-6 flex items-center justify-center space-x-4">
+              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs text-slate-400">Syncing live blockchain data</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Cloud Console Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <Cloud className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-bold">Cloud Console</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex flex-col space-y-1">
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>CPU Usage</span>
+                <span>42%</span>
+              </div>
+              <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-blue-500 h-full w-[42%]" />
+              </div>
+            </div>
+            <div className="flex flex-col space-y-1">
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>Memory</span>
+                <span>8.2 / 16 GB</span>
+              </div>
+              <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-indigo-500 h-full w-[51%]" />
+              </div>
+            </div>
+            <div className="pt-2">
+              <button className="w-full py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold flex items-center justify-center space-x-2 transition-colors">
+                <span>Deploy New Instance</span>
+                <ChevronRight className="w-3 h-3" />
+              </button>
+            </div>
+            <div className="flex items-center space-x-2 text-[10px] text-slate-500 font-mono">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              <span>us-east-1 | active</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Payments Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <CreditCard className="w-6 h-6 text-orange-400" />
+            <h3 className="text-xl font-bold">PayNexus</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Gateway Status</span>
+              <span className="text-orange-400 font-mono">All Systems Nominal</span>
+            </div>
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Success Rate</span>
+              <span className="text-white font-mono">99.98%</span>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <div className="flex items-center space-x-2">
+                  <Zap className="w-3 h-3 text-orange-400" />
+                  <span className="text-xs">Instant Payouts</span>
+                </div>
+                <span className="text-[10px] bg-orange-400/20 text-orange-400 px-1.5 py-0.5 rounded">Active</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <div className="flex items-center space-x-2">
+                  <ShieldCheck className="w-3 h-3 text-orange-400" />
+                  <span className="text-xs">Fraud Detection</span>
+                </div>
+                <span className="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded">AI Monitoring</span>
+              </div>
+            </div>
+            <button className="w-full py-2 mt-2 bg-orange-600 hover:bg-orange-700 rounded-lg text-xs font-semibold transition-colors">
+              Configure Payment Rails
+            </button>
+          </div>
+        </div>
+
+
         {/* Finance Tool */}
         <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
           <div className="flex items-center space-x-2 mb-6">
@@ -482,6 +779,7 @@ const GuruTools = () => {
             </div>
           </div>
         </div>
+
 
         {/* Product Development Tool */}
         <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
@@ -581,98 +879,6 @@ const GuruTools = () => {
           </div>
         </div>
 
-        {/* AI Tool */}
-        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
-          <div className="flex items-center space-x-2 mb-6">
-            <Bot className="w-6 h-6 text-indigo-400" />
-            <h3 className="text-xl font-bold">AI Strategist</h3>
-          </div>
-          <textarea
-            className="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none h-32"
-            placeholder="Describe your tech stack problem..."
-            value={aiInput}
-            onChange={(e) => setAiInput(e.target.value)}
-          />
-          <button
-            onClick={askGuruAi}
-            disabled={isLoading || !aiInput.trim()}
-            className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-700 disabled:cursor-not-allowed rounded-lg font-semibold transition-colors flex items-center justify-center"
-          >
-            {isLoading ? (
-              <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : (
-              'Ask Guru AI'
-            )}
-          </button>
-          {aiResponse && (
-            <div className="mt-4 p-3 bg-slate-800 border-l-4 border-indigo-500 text-xs font-mono">
-              {aiResponse}
-            </div>
-          )}
-        </div>
-
-        {/* Blockchain Tool */}
-        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
-          <div className="flex items-center space-x-2 mb-6">
-            <LinkIcon className="w-6 h-6 text-emerald-400" />
-            <h3 className="text-xl font-bold">Chain Explorer</h3>
-          </div>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
-              <span className="text-slate-400">Network</span>
-              <span className="text-emerald-400 font-mono">Mainnet-v2</span>
-            </div>
-            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
-              <span className="text-slate-400">Gas Price</span>
-              <span className="text-white font-mono">12 Gwei</span>
-            </div>
-            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
-              <span className="text-slate-400">Block Height</span>
-              <span className="text-white font-mono">18,234,091</span>
-            </div>
-            <div className="mt-6 flex items-center justify-center space-x-4">
-              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs text-slate-400">Syncing live blockchain data</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Payments Tool */}
-        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
-          <div className="flex items-center space-x-2 mb-6">
-            <CreditCard className="w-6 h-6 text-orange-400" />
-            <h3 className="text-xl font-bold">PayNexus</h3>
-          </div>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
-              <span className="text-slate-400">Gateway Status</span>
-              <span className="text-orange-400 font-mono">All Systems Nominal</span>
-            </div>
-            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
-              <span className="text-slate-400">Success Rate</span>
-              <span className="text-white font-mono">99.98%</span>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <div className="flex items-center space-x-2">
-                  <Zap className="w-3 h-3 text-orange-400" />
-                  <span className="text-xs">Instant Payouts</span>
-                </div>
-                <span className="text-[10px] bg-orange-400/20 text-orange-400 px-1.5 py-0.5 rounded">Active</span>
-              </div>
-              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <div className="flex items-center space-x-2">
-                  <ShieldCheck className="w-3 h-3 text-orange-400" />
-                  <span className="text-xs">Fraud Detection</span>
-                </div>
-                <span className="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded">AI Monitoring</span>
-              </div>
-            </div>
-            <button className="w-full py-2 mt-2 bg-orange-600 hover:bg-orange-700 rounded-lg text-xs font-semibold transition-colors">
-              Configure Payment Rails
-            </button>
-          </div>
-        </div>
 
         {/* E-commerce Tool */}
         <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
@@ -696,43 +902,6 @@ const GuruTools = () => {
           </div>
         </div>
 
-        {/* Cloud Console Tool */}
-        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
-          <div className="flex items-center space-x-2 mb-6">
-            <Cloud className="w-6 h-6 text-blue-400" />
-            <h3 className="text-xl font-bold">Cloud Console</h3>
-          </div>
-          <div className="space-y-4">
-            <div className="flex flex-col space-y-1">
-              <div className="flex justify-between text-xs text-slate-400">
-                <span>CPU Usage</span>
-                <span>42%</span>
-              </div>
-              <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-blue-500 h-full w-[42%]" />
-              </div>
-            </div>
-            <div className="flex flex-col space-y-1">
-              <div className="flex justify-between text-xs text-slate-400">
-                <span>Memory</span>
-                <span>8.2 / 16 GB</span>
-              </div>
-              <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-indigo-500 h-full w-[51%]" />
-              </div>
-            </div>
-            <div className="pt-2">
-              <button className="w-full py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold flex items-center justify-center space-x-2 transition-colors">
-                <span>Deploy New Instance</span>
-                <ChevronRight className="w-3 h-3" />
-              </button>
-            </div>
-            <div className="flex items-center space-x-2 text-[10px] text-slate-500 font-mono">
-              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-              <span>us-east-1 | active</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

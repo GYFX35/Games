@@ -37,6 +37,24 @@ def ai_strategist():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/telecom/status', methods=['GET'])
+def telecom_status():
+    return jsonify({
+        'network_load': '74%',
+        '5g_nodes': 14209,
+        '6g_status': 'Active',
+        'global_latency': '24ms'
+    })
+
+@app.route('/api/astro/telemetry', methods=['GET'])
+def astro_telemetry():
+    return jsonify({
+        'orbital_objects': 18492,
+        'data_downlink': '4.2 TB/s',
+        'active_arrays': 128,
+        'constellation_sync': '100%'
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'healthy', 'google_api_configured': model is not None})
