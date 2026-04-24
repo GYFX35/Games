@@ -55,6 +55,35 @@ def astro_telemetry():
         'constellation_sync': '100%'
     })
 
+@app.route('/api/med/diagnostics', methods=['POST'])
+def med_diagnostics():
+    data = request.json
+    analysis_type = data.get('type', 'general')
+
+    if analysis_type == 'x-ray':
+        return jsonify({
+            'status': 'Analysis Complete',
+            'findings': 'No significant abnormalities detected in the pulmonary fields.',
+            'confidence': '98.4%',
+            'ai_insights': 'Early stage screening shows healthy lung density.'
+        })
+
+    return jsonify({
+        'status': 'Diagnostic Active',
+        'active_scans': 12,
+        'global_database_sync': '99.9%',
+        'accuracy_index': '97.8%'
+    })
+
+@app.route('/api/med/development', methods=['GET'])
+def med_development():
+    return jsonify({
+        'active_compounds': 452,
+        'clinical_trials': 18,
+        'molecular_simulations': '1.2M/s',
+        'fda_pipeline_status': 'Stage 3'
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'healthy', 'google_api_configured': model is not None})

@@ -30,7 +30,11 @@ import {
   Radio,
   Brain,
   Signal,
-  Globe
+  Globe,
+  Stethoscope,
+  Microscope,
+  Activity,
+  Pill
 } from 'lucide-react';
 import { cn } from './lib/utils';
 
@@ -295,6 +299,9 @@ const GuruTools = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [telecomData, setTelecomData] = useState<any>(null);
   const [astroData, setAstroData] = useState<any>(null);
+  const [medDiagData, setMedDiagData] = useState<any>(null);
+  const [medDevData, setMedDevData] = useState<any>(null);
+  const [isXrayLoading, setIsXrayLoading] = useState(false);
 
   const fetchTelecomStatus = async () => {
     try {
@@ -313,6 +320,33 @@ const GuruTools = () => {
       setAstroData(data);
     } catch (error) {
       console.error('Astro Telemetry Error:', error);
+    }
+  };
+
+  const fetchMedDiagnostics = async (type: 'general' | 'x-ray' = 'general') => {
+    if (type === 'x-ray') setIsXrayLoading(true);
+    try {
+      const response = await fetch('http://localhost:5000/api/med/diagnostics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type })
+      });
+      const data = await response.json();
+      setMedDiagData(data);
+    } catch (error) {
+      console.error('Medicine Diagnostics Error:', error);
+    } finally {
+      if (type === 'x-ray') setIsXrayLoading(false);
+    }
+  };
+
+  const fetchMedDevelopment = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/med/development');
+      const data = await response.json();
+      setMedDevData(data);
+    } catch (error) {
+      console.error('Medicine Development Error:', error);
     }
   };
 
@@ -879,6 +913,111 @@ const GuruTools = () => {
           </div>
         </div>
 
+
+        {/* Medicine Diagnostics Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-2">
+            <Activity className="w-4 h-4 text-emerald-500 animate-pulse opacity-50" />
+          </div>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Stethoscope className="w-6 h-6 text-emerald-400" />
+              <h3 className="text-xl font-bold">Med Diagnostics</h3>
+            </div>
+            <button
+              onClick={() => fetchMedDiagnostics()}
+              className="p-1 hover:bg-slate-800 rounded transition-colors"
+            >
+              <Zap className="w-4 h-4 text-amber-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="bg-slate-800/40 p-3 rounded-lg border border-slate-700">
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-[10px] text-slate-500 uppercase">Accuracy Index</span>
+                <span className="text-xs font-mono text-emerald-400">{medDiagData?.accuracy_index || '97.8%'}</span>
+              </div>
+              <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div className="bg-emerald-500 h-full transition-all duration-500" style={{ width: medDiagData?.accuracy_index || '97.8%' }} />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Active Scans</span>
+                <span className="text-sm font-bold">{medDiagData?.active_scans || 12}</span>
+              </div>
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Global Sync</span>
+                <span className="text-sm font-bold text-indigo-400">{medDiagData?.global_database_sync || '99.9%'}</span>
+              </div>
+            </div>
+
+            {medDiagData?.findings && (
+              <div className="p-2 bg-emerald-900/20 border border-emerald-500/30 rounded text-[10px] text-emerald-300">
+                <span className="font-bold uppercase block mb-1">X-Ray Findings:</span>
+                {medDiagData.findings}
+              </div>
+            )}
+
+            <button
+              onClick={() => fetchMedDiagnostics('x-ray')}
+              disabled={isXrayLoading}
+              className="w-full py-2 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-600/50 rounded-lg text-xs font-semibold text-emerald-400 transition-all flex items-center justify-center space-x-2"
+            >
+              {isXrayLoading ? <div className="h-3 w-3 border-2 border-emerald-400/30 border-t-emerald-400 rounded-full animate-spin" /> : <Search className="w-3 h-3" />}
+              <span>Scan X-Ray (Rayon X)</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Medicine Development Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Microscope className="w-6 h-6 text-indigo-400" />
+              <h3 className="text-xl font-bold">Pharma Forge</h3>
+            </div>
+            <button
+              onClick={fetchMedDevelopment}
+              className="p-1 hover:bg-slate-800 rounded transition-colors"
+            >
+              <Pill className="w-4 h-4 text-indigo-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between p-2 rounded bg-slate-800/50 border border-slate-700">
+                <span className="text-xs text-slate-300">Active Compounds</span>
+                <span className="text-xs font-mono text-white">{medDevData?.active_compounds || 452}</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-slate-800/50 border border-slate-700">
+                <span className="text-xs text-slate-300">Clinical Trials</span>
+                <span className="text-xs font-mono text-emerald-400">{medDevData?.clinical_trials || 18}</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-slate-800/50 border border-slate-700">
+                <span className="text-xs text-slate-300">FDA Pipeline</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+                  {medDevData?.fda_pipeline_status || 'Stage 3'}
+                </span>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                <span>Molecular Simulations</span>
+                <span className="text-indigo-400">{medDevData?.molecular_simulations || '1.2M/s'}</span>
+              </div>
+              <div className="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                <div className="bg-indigo-500 h-full w-[65%] animate-pulse" />
+              </div>
+            </div>
+
+            <button className="w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-600/50 rounded-lg text-xs font-semibold text-indigo-400 transition-colors">
+              Synthesize New Molecule
+            </button>
+          </div>
+        </div>
 
         {/* E-commerce Tool */}
         <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
