@@ -91,6 +91,24 @@ def science_simulation():
         'estimated_completion': '4h 12m'
     })
 
+@app.route('/api/ai/agents', methods=['GET'])
+def ai_agents():
+    return jsonify({
+        'active_agents': 12540,
+        'autonomous_tasks': 84291,
+        'swarm_cohesion': '98.2%',
+        'global_reach': '142 countries'
+    })
+
+@app.route('/api/ai/models', methods=['GET'])
+def ai_models():
+    return jsonify({
+        'training_jobs': 42,
+        'avg_accuracy': '94.8%',
+        'total_parameters': '1.2 Trillion',
+        'deployment_status': 'Stable'
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'healthy', 'google_api_configured': model is not None})
