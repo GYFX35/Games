@@ -14,11 +14,15 @@ import {
   X,
   ChevronRight,
   Car,
-  Code,
   Landmark,
   Briefcase,
   TrendingUp,
-  Globe
+  Globe,
+  Smartphone,
+  CreditCard,
+  Layers,
+  ShieldCheck,
+  Zap
 } from 'lucide-react';
 import { cn } from './lib/utils';
 
@@ -341,26 +345,36 @@ const GuruTools = () => {
         {/* Computer Science & Digital Ecosystem */}
         <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
           <div className="flex items-center space-x-2 mb-6">
-            <Code className="w-6 h-6 text-cyan-400" />
+            <Smartphone className="w-6 h-6 text-cyan-400" />
             <h3 className="text-xl font-bold">Ecosystem Hub</h3>
           </div>
           <div className="space-y-4">
             <div className="flex items-center space-x-2 text-xs bg-slate-800 p-2 rounded">
               <Globe className="w-3 h-3 text-cyan-400" />
-              <span className="text-slate-300">Distributed Mesh Protocol active</span>
+              <span className="text-slate-300">5G Network Mesh active</span>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-slate-800 p-2 rounded text-center">
-                <div className="text-xs text-slate-500">Latency</div>
-                <div className="text-sm font-mono text-cyan-400">1.2ms</div>
+                <div className="text-xs text-slate-500">Subscribers</div>
+                <div className="text-sm font-mono text-cyan-400">1.2M</div>
               </div>
               <div className="bg-slate-800 p-2 rounded text-center">
-                <div className="text-xs text-slate-500">Nodes</div>
-                <div className="text-sm font-mono text-cyan-400">4,092</div>
+                <div className="text-xs text-slate-500">Coverage</div>
+                <div className="text-sm font-mono text-cyan-400">98.4%</div>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">IoT Edge Nodes</span>
+                <span className="text-xs font-mono text-white">12,402</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">Network Latency</span>
+                <span className="text-xs font-mono text-cyan-400">0.8ms</span>
               </div>
             </div>
             <button className="w-full py-2 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-600/50 rounded-lg text-xs font-semibold text-cyan-400 transition-colors">
-              Manage Digital Assets
+              Operator Dashboard
             </button>
           </div>
         </div>
@@ -380,18 +394,64 @@ const GuruTools = () => {
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-[10px] text-slate-500 uppercase tracking-wider">
-                <span>Asset Allocation</span>
-                <span>Value</span>
+                <span>Core Banking Status</span>
+                <span className="text-emerald-400 font-mono">Synchronized</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">Transaction Vol.</span>
+                <span className="text-xs font-mono text-white">4.2k / sec</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">KYC/AML Compliance</span>
+                <span className="text-xs font-mono text-emerald-400">99.9%</span>
               </div>
               <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
                 <span className="text-xs">Yield Aggregator</span>
                 <span className="text-xs font-mono text-white">420.5 ETH</span>
               </div>
-              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <span className="text-xs">Risk Matrix</span>
-                <span className="text-xs font-mono text-white">Low</span>
+            </div>
+            <div className="pt-2">
+              <button className="w-full py-2 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-600/50 rounded-lg text-xs font-semibold text-emerald-400 transition-colors">
+                Launch Digital Banking API
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Product Development Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <Layers className="w-6 h-6 text-indigo-400" />
+            <h3 className="text-xl font-bold">Product Forge</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <div className="flex justify-between text-[10px] text-slate-500 uppercase tracking-wider">
+                <span>Release Velocity</span>
+                <span className="text-indigo-400">High</span>
+              </div>
+              <div className="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                <div className="bg-indigo-500 h-full w-[88%]" />
               </div>
             </div>
+            <div className="space-y-2">
+              {[
+                { stage: "Ideation", status: "Completed", color: "bg-emerald-500" },
+                { stage: "Prototyping", status: "Active", color: "bg-indigo-500" },
+                { stage: "Beta Testing", status: "Scheduled", color: "bg-slate-600" }
+              ].map((item, i) => (
+                <div key={i} className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                  <span className="text-xs">{item.stage}</span>
+                  <div className="flex items-center space-x-1.5">
+                    <div className={cn("h-1.5 w-1.5 rounded-full", item.color)} />
+                    <span className="text-[10px] text-slate-400">{item.status}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-xs font-semibold transition-colors">
+              New Product Sprint
+            </button>
           </div>
         </div>
 
@@ -469,6 +529,43 @@ const GuruTools = () => {
               <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs text-slate-400">Syncing live blockchain data</span>
             </div>
+          </div>
+        </div>
+
+        {/* Payments Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <CreditCard className="w-6 h-6 text-orange-400" />
+            <h3 className="text-xl font-bold">PayNexus</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Gateway Status</span>
+              <span className="text-orange-400 font-mono">All Systems Nominal</span>
+            </div>
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Success Rate</span>
+              <span className="text-white font-mono">99.98%</span>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <div className="flex items-center space-x-2">
+                  <Zap className="w-3 h-3 text-orange-400" />
+                  <span className="text-xs">Instant Payouts</span>
+                </div>
+                <span className="text-[10px] bg-orange-400/20 text-orange-400 px-1.5 py-0.5 rounded">Active</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <div className="flex items-center space-x-2">
+                  <ShieldCheck className="w-3 h-3 text-orange-400" />
+                  <span className="text-xs">Fraud Detection</span>
+                </div>
+                <span className="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded">AI Monitoring</span>
+              </div>
+            </div>
+            <button className="w-full py-2 mt-2 bg-orange-600 hover:bg-orange-700 rounded-lg text-xs font-semibold transition-colors">
+              Configure Payment Rails
+            </button>
           </div>
         </div>
 
