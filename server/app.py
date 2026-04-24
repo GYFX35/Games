@@ -55,6 +55,42 @@ def astro_telemetry():
         'constellation_sync': '100%'
     })
 
+@app.route('/api/cyber/threat-intel', methods=['GET'])
+def cyber_threat_intel():
+    return jsonify({
+        'active_threats': 12,
+        'security_score': 94,
+        'firewall_status': 'Active',
+        'threat_level': 'Elevated'
+    })
+
+@app.route('/api/data/pipeline-metrics', methods=['GET'])
+def data_pipeline_metrics():
+    return jsonify({
+        'throughput': '1.8 PB/day',
+        'data_quality': '99.9%',
+        'active_pipelines': 42,
+        'latency_avg': '12ms'
+    })
+
+@app.route('/api/analytics/realtime', methods=['GET'])
+def analytics_realtime():
+    return jsonify({
+        'active_sessions': 8429,
+        'conversion_rate': '3.4%',
+        'user_engagement': 'high',
+        'peak_load': '88%'
+    })
+
+@app.route('/api/science/simulation', methods=['GET'])
+def science_simulation():
+    return jsonify({
+        'compute_resources': '84%',
+        'simulation_progress': '62%',
+        'nodes_active': 1024,
+        'estimated_completion': '4h 12m'
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'healthy', 'google_api_configured': model is not None})
