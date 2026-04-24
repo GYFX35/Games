@@ -1,73 +1,64 @@
-# React + TypeScript + Vite
+# ITsaas Nexus
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ITsaas Nexus is an integrated multi-tier platform combining SaaS, ITaaS, PaaS, IaaS, and Cloud solutions into a unified hub. Designed for game developers, researchers, and tech innovators, it leverages AI and Blockchain to provide a next-generation digital ecosystem.
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **SaaS (Software as a Service):** AI-driven CRM and collaborative project management.
+- **ITaaS (IT as a Service):** Managed AI nodes and cybersecurity operations.
+- **PaaS (Platform as a Service):** Game engine SDKs and Blockchain APIs.
+- **IaaS (Infrastructure as a Service):** Edge computing and decentralized storage.
+- **Guru Innovation Suite:** Advanced tools for specialized industries.
 
-## React Compiler
+## Enhanced Guru Tools
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Our latest update introduces advanced tools for future-focused industries:
 
-## Expanding the ESLint configuration
+- **Future Automotive Products:** Simulation and performance tracking for next-gen EV and autonomous vehicle technologies.
+- **Computer Science & Digital Ecosystem:** Tools for managing distributed mesh protocols and digital assets within a high-scale ecosystem.
+- **Fintech & Finances:** Real-time financial engines for yield aggregation, asset allocation, and risk management.
+- **Business Development:** Strategic pipeline management and partnership portals for global expansion and B2B integration.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS, Lucide React.
+- **Backend:** Python Flask (Gemini AI Proxy).
+- **Icons:** Lucide React for consistent and modern iconography.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Prerequisites
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Node.js (latest stable)
+- Python 3.12+
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Installation
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Install frontend dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Install backend dependencies:
+   ```bash
+   pip install -r server/requirements.txt
+   ```
+
+### Running the Project
+
+1. Start the backend server:
+   ```bash
+   python server/app.py
+   ```
+
+2. Start the frontend development server:
+   ```bash
+   npm run dev
+   ```
+
+## Contributing
+
+We welcome contributions! Please ensure your changes align with the modular architecture of ITsaas Nexus.
+
+---
+© 2025 ITsaas Nexus. Integrated AI & Blockchain Solutions for Global Innovation.

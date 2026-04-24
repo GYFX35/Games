@@ -12,7 +12,13 @@ import {
   ShoppingBag,
   Menu,
   X,
-  ChevronRight
+  ChevronRight,
+  Car,
+  Code,
+  Landmark,
+  Briefcase,
+  TrendingUp,
+  Globe
 } from 'lucide-react';
 import { cn } from './lib/utils';
 
@@ -308,6 +314,108 @@ const GuruTools = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <h2 className="text-3xl font-extrabold text-slate-900 mb-8">Guru Innovation Suite</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-8">
+        {/* Automotive Innovation */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <Car className="w-6 h-6 text-red-400" />
+            <h3 className="text-xl font-bold">Auto Future</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Autonomous Level</span>
+              <span className="text-red-400 font-mono">L5 Prototype</span>
+            </div>
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Energy Efficiency</span>
+              <span className="text-white font-mono">98.2%</span>
+            </div>
+            <div className="mt-4">
+              <p className="text-xs text-slate-400 mb-2">Simulating next-gen EV drivetrain performance...</p>
+              <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-red-500 h-full w-[75%] animate-pulse" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Computer Science & Digital Ecosystem */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <Code className="w-6 h-6 text-cyan-400" />
+            <h3 className="text-xl font-bold">Ecosystem Hub</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2 text-xs bg-slate-800 p-2 rounded">
+              <Globe className="w-3 h-3 text-cyan-400" />
+              <span className="text-slate-300">Distributed Mesh Protocol active</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-slate-800 p-2 rounded text-center">
+                <div className="text-xs text-slate-500">Latency</div>
+                <div className="text-sm font-mono text-cyan-400">1.2ms</div>
+              </div>
+              <div className="bg-slate-800 p-2 rounded text-center">
+                <div className="text-xs text-slate-500">Nodes</div>
+                <div className="text-sm font-mono text-cyan-400">4,092</div>
+              </div>
+            </div>
+            <button className="w-full py-2 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-600/50 rounded-lg text-xs font-semibold text-cyan-400 transition-colors">
+              Manage Digital Assets
+            </button>
+          </div>
+        </div>
+
+        {/* Finance Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <Landmark className="w-6 h-6 text-emerald-400" />
+            <h3 className="text-xl font-bold">FinTech Engine</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-baseline space-x-2">
+              <span className="text-2xl font-bold">$1.2M</span>
+              <span className="text-xs text-emerald-400 flex items-center">
+                <TrendingUp className="w-3 h-3 mr-1" /> +12.5%
+              </span>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between text-[10px] text-slate-500 uppercase tracking-wider">
+                <span>Asset Allocation</span>
+                <span>Value</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">Yield Aggregator</span>
+                <span className="text-xs font-mono text-white">420.5 ETH</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">Risk Matrix</span>
+                <span className="text-xs font-mono text-white">Low</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Business Development */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <Briefcase className="w-6 h-6 text-purple-400" />
+            <h3 className="text-xl font-bold">BizDev Portal</h3>
+          </div>
+          <div className="space-y-3">
+            <div className="text-xs text-slate-400 mb-2">Active Strategic Pipelines</div>
+            {['Global Expansion', 'M&A Analytics', 'B2B Integration'].map((deal) => (
+              <div key={deal} className="flex items-center space-x-3 bg-slate-800 p-2 rounded border border-slate-700/50">
+                <div className="h-2 w-2 rounded-full bg-purple-500" />
+                <span className="text-xs">{deal}</span>
+                <ChevronRight className="w-3 h-3 ml-auto text-slate-600" />
+              </div>
+            ))}
+            <button className="mt-2 w-full py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-xs font-semibold transition-colors">
+              New Partnership Request
+            </button>
+          </div>
+        </div>
+
         {/* AI Tool */}
         <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
           <div className="flex items-center space-x-2 mb-6">
