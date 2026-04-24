@@ -274,9 +274,34 @@ const GamesSection = () => (
 const GuruTools = () => {
   const [aiInput, setAiInput] = useState('');
   const [aiResponse, setAiResponse] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const simulateAi = () => {
-    setAiResponse("Analyzing technical requirements... Integrating blockchain consensus with AI model training... Solution: Use Layer 2 scaling with federated learning.");
+  const askGuruAi = async () => {
+    if (!aiInput.trim()) return;
+
+    setIsLoading(true);
+    setAiResponse('');
+    try {
+      const response = await fetch('http://localhost:5000/api/ai-strategist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: aiInput }),
+      });
+
+      const data = await response.json();
+      if (data.response) {
+        setAiResponse(data.response);
+      } else if (data.error) {
+        setAiResponse(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      setAiResponse('Error: Could not connect to the AI backend. Make sure the server is running.');
+      console.error('AI Strategy Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -296,10 +321,15 @@ const GuruTools = () => {
             onChange={(e) => setAiInput(e.target.value)}
           />
           <button
-            onClick={simulateAi}
-            className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold transition-colors"
+            onClick={askGuruAi}
+            disabled={isLoading || !aiInput.trim()}
+            className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-700 disabled:cursor-not-allowed rounded-lg font-semibold transition-colors flex items-center justify-center"
           >
-            Ask Guru AI
+            {isLoading ? (
+              <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              'Ask Guru AI'
+            )}
           </button>
           {aiResponse && (
             <div className="mt-4 p-3 bg-slate-800 border-l-4 border-indigo-500 text-xs font-mono">
