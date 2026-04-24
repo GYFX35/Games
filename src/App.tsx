@@ -295,6 +295,10 @@ const GuruTools = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [telecomData, setTelecomData] = useState<any>(null);
   const [astroData, setAstroData] = useState<any>(null);
+  const [cyberData, setCyberData] = useState<any>(null);
+  const [dataForgeData, setDataForgeData] = useState<any>(null);
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
+  const [scienceData, setScienceData] = useState<any>(null);
 
   const fetchTelecomStatus = async () => {
     try {
@@ -313,6 +317,46 @@ const GuruTools = () => {
       setAstroData(data);
     } catch (error) {
       console.error('Astro Telemetry Error:', error);
+    }
+  };
+
+  const fetchCyberThreatIntel = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/cyber/threat-intel');
+      const data = await response.json();
+      setCyberData(data);
+    } catch (error) {
+      console.error('Cyber Threat Intel Error:', error);
+    }
+  };
+
+  const fetchDataPipelineMetrics = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/data/pipeline-metrics');
+      const data = await response.json();
+      setDataForgeData(data);
+    } catch (error) {
+      console.error('Data Pipeline Metrics Error:', error);
+    }
+  };
+
+  const fetchAnalyticsRealtime = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/analytics/realtime');
+      const data = await response.json();
+      setAnalyticsData(data);
+    } catch (error) {
+      console.error('Analytics Realtime Error:', error);
+    }
+  };
+
+  const fetchScienceSimulation = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/science/simulation');
+      const data = await response.json();
+      setScienceData(data);
+    } catch (error) {
+      console.error('Science Simulation Error:', error);
     }
   };
 
@@ -899,6 +943,150 @@ const GuruTools = () => {
                 </button>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Cybersecurity Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <ShieldCheck className="w-6 h-6 text-red-500" />
+              <h3 className="text-xl font-bold">Cyber Guard</h3>
+            </div>
+            <button onClick={fetchCyberThreatIntel} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-red-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="bg-slate-800/40 p-3 rounded-lg border border-slate-700">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-slate-500 uppercase font-bold">Security Score</span>
+                <span className="text-xs font-mono text-emerald-400">{cyberData?.security_score || '94'}%</span>
+              </div>
+              <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div className="bg-emerald-500 h-full transition-all duration-500" style={{ width: `${cyberData?.security_score || '94'}%` }} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Active Threats</span>
+                <span className="text-sm font-bold text-red-400">{cyberData?.active_threats?.toLocaleString() || '12'}</span>
+              </div>
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Threat Level</span>
+                <span className="text-sm font-bold text-amber-400">{cyberData?.threat_level || 'Elevated'}</span>
+              </div>
+            </div>
+            <button className="w-full py-2 bg-red-600/20 hover:bg-red-600/30 border border-red-600/50 rounded-lg text-xs font-semibold text-red-400 transition-all">
+              Initialize System Lockdown
+            </button>
+          </div>
+        </div>
+
+        {/* Data Engineering Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Database className="w-6 h-6 text-cyan-400" />
+              <h3 className="text-xl font-bold">Data Forge</h3>
+            </div>
+            <button onClick={fetchDataPipelineMetrics} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-cyan-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Throughput</span>
+              <span className="text-cyan-400 font-mono">{dataForgeData?.throughput || '1.8 PB/day'}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Data Quality</span>
+              <span className="text-emerald-400 font-mono">{dataForgeData?.data_quality || '99.9%'}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Active Pipelines</span>
+              <span className="text-white font-mono">{dataForgeData?.active_pipelines || '42'}</span>
+            </div>
+            <button className="w-full py-2 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-600/50 rounded-lg text-xs font-semibold text-cyan-400 transition-colors">
+              Optimize ETL Flow
+            </button>
+          </div>
+        </div>
+
+        {/* Analytics Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <TrendingUp className="w-6 h-6 text-indigo-400" />
+              <h3 className="text-xl font-bold">Analytics Pulse</h3>
+            </div>
+            <button onClick={fetchAnalyticsRealtime} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-indigo-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-baseline space-x-2">
+              <span className="text-2xl font-bold">{analyticsData?.active_sessions?.toLocaleString() || '8,429'}</span>
+              <span className="text-xs text-slate-400 uppercase">Live Sessions</span>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between text-[10px] text-slate-500 uppercase tracking-wider">
+                <span>User Engagement</span>
+                <span className="text-indigo-400 font-mono">{analyticsData?.user_engagement || 'High'}</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">Conversion Rate</span>
+                <span className="text-xs font-mono text-emerald-400">{analyticsData?.conversion_rate || '3.4%'}</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">Peak Load</span>
+                <span className="text-xs font-mono text-white">{analyticsData?.peak_load || '88%'}</span>
+              </div>
+            </div>
+            <button className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-xs font-semibold transition-colors">
+              Generate BI Report
+            </button>
+          </div>
+        </div>
+
+        {/* Science Lab Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Bot className="w-6 h-6 text-emerald-400" />
+              <h3 className="text-xl font-bold">Science Lab</h3>
+            </div>
+            <button onClick={fetchScienceSimulation} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-emerald-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="bg-slate-800/50 p-3 rounded-lg border border-emerald-900/20">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-slate-500 uppercase font-bold">Simulation Progress</span>
+                <span className="text-[10px] text-emerald-400">{scienceData?.simulation_progress || '62%'}</span>
+              </div>
+              <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div className="bg-emerald-500 h-full transition-all duration-1000" style={{ width: scienceData?.simulation_progress || '62%' }} />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between p-2 rounded bg-slate-800/30">
+                <span className="text-xs text-slate-300">Compute Resources</span>
+                <span className="text-xs font-mono text-emerald-400">{scienceData?.compute_resources || '84%'}</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-slate-800/30">
+                <span className="text-xs text-slate-300">Nodes Active</span>
+                <span className="text-xs font-mono text-white">{scienceData?.nodes_active?.toLocaleString() || '1,024'}</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-slate-800/30">
+                <span className="text-xs text-slate-300">Est. Completion</span>
+                <span className="text-xs font-mono text-indigo-400">{scienceData?.estimated_completion || '4h 12m'}</span>
+              </div>
+            </div>
+            <button className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-xs font-bold transition-all">
+              Launch Quantum Simulation
+            </button>
           </div>
         </div>
 
