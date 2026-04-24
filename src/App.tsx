@@ -18,7 +18,7 @@ import { cn } from './lib/utils';
 
 // --- Types ---
 
-type View = 'hero' | 'saas' | 'itaas' | 'paas' | 'iaas' | 'games' | 'research' | 'players' | 'guru';
+type View = 'hero' | 'saas' | 'itaas' | 'paas' | 'iaas' | 'cloud' | 'games' | 'research' | 'players' | 'guru';
 
 // --- Components ---
 
@@ -30,6 +30,7 @@ const Navbar = ({ activeView, setView }: { activeView: View, setView: (v: View) 
     { id: 'itaas', label: 'ITaaS', icon: Cpu },
     { id: 'paas', label: 'PaaS', icon: Database },
     { id: 'iaas', label: 'IaaS', icon: Cloud },
+    { id: 'cloud', label: 'Cloud', icon: Cloud },
     { id: 'games', label: 'Games', icon: Gamepad2 },
     { id: 'research', label: 'Research', icon: Search },
     { id: 'players', label: 'Players', icon: User },
@@ -211,6 +212,12 @@ const iaasContent = [
   { title: "Auto-scaling Clusters", desc: "Kubernetes clusters that grow with your user base automatically.", icon: Database, tags: ["K8s", "Scale"] }
 ];
 
+const cloudContent = [
+  { title: "Cloud IDE", desc: "Collaborative development environment in the browser with pre-configured stacks.", icon: Cpu, tags: ["Cloud", "DevTools"] },
+  { title: "Serverless Forge", desc: "Deploy functions as a service with instant scaling and pay-per-use billing.", icon: Cloud, tags: ["Serverless", "PaaS"] },
+  { title: "DevSecOps Pipeline", desc: "Automated CI/CD with integrated security scanning and compliance checks.", icon: Search, tags: ["DevOps", "Security"] }
+];
+
 const GamesSection = () => (
   <div className="bg-slate-50 py-16">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -275,7 +282,7 @@ const GuruTools = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <h2 className="text-3xl font-extrabold text-slate-900 mb-8">Guru Innovation Suite</h2>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-8">
         {/* AI Tool */}
         <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
           <div className="flex items-center space-x-2 mb-6">
@@ -348,6 +355,44 @@ const GuruTools = () => {
             ))}
           </div>
         </div>
+
+        {/* Cloud Console Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <Cloud className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-bold">Cloud Console</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex flex-col space-y-1">
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>CPU Usage</span>
+                <span>42%</span>
+              </div>
+              <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-blue-500 h-full w-[42%]" />
+              </div>
+            </div>
+            <div className="flex flex-col space-y-1">
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>Memory</span>
+                <span>8.2 / 16 GB</span>
+              </div>
+              <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-indigo-500 h-full w-[51%]" />
+              </div>
+            </div>
+            <div className="pt-2">
+              <button className="w-full py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold flex items-center justify-center space-x-2 transition-colors">
+                <span>Deploy New Instance</span>
+                <ChevronRight className="w-3 h-3" />
+              </button>
+            </div>
+            <div className="flex items-center space-x-2 text-[10px] text-slate-500 font-mono">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              <span>us-east-1 | active</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -394,6 +439,14 @@ export default function App() {
             title="Infrastructure as a Service"
             subtitle="On-demand access to cloud-based computing resources."
             items={iaasContent}
+          />
+        )}
+
+        {view === 'cloud' && (
+          <Section
+            title="Cloud Computing & Dev Tools"
+            subtitle="Next-generation cloud infrastructure and development environments."
+            items={cloudContent}
           />
         )}
 
