@@ -17,12 +17,15 @@ import {
   Landmark,
   Briefcase,
   TrendingUp,
-  Globe,
   Smartphone,
   CreditCard,
   Layers,
   ShieldCheck,
-  Zap
+  Zap,
+  Tablet,
+  Monitor,
+  Wifi,
+  HardDrive
 } from 'lucide-react';
 import { cn } from './lib/utils';
 
@@ -342,40 +345,102 @@ const GuruTools = () => {
           </div>
         </div>
 
-        {/* Computer Science & Digital Ecosystem */}
+        {/* IoT Development Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="absolute -top-12 -right-12 w-24 h-24 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-colors" />
+          <div className="flex items-center space-x-2 mb-6">
+            <Wifi className="w-6 h-6 text-emerald-400" />
+            <h3 className="text-xl font-bold">IoT Sentinel</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="bg-slate-800/50 rounded-lg p-3 border border-emerald-900/20">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Protocol Health</span>
+                <span className="text-[10px] text-emerald-400 animate-pulse">MQTT Secure</span>
+              </div>
+              <div className="grid grid-cols-3 gap-1">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+                  <div key={i} className="h-1 bg-emerald-500/40 rounded-full shadow-[0_0_5px_rgba(16,185,129,0.3)]" />
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between p-2 rounded bg-slate-800/30">
+                <span className="text-xs text-slate-300">Data Throughput</span>
+                <span className="text-xs font-mono text-emerald-400">1.4 GB/s</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-slate-800/30">
+                <span className="text-xs text-slate-300">Active Sensors</span>
+                <span className="text-xs font-mono text-white">42,891</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-slate-800/30">
+                <span className="text-xs text-slate-300">Firmware OTA</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">In Progress</span>
+              </div>
+            </div>
+
+            <button className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-xs font-bold transition-all shadow-[0_0_15px_rgba(5,150,105,0.2)] hover:shadow-[0_0_20px_rgba(5,150,105,0.4)]">
+              Scan Peripheral Mesh
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile & IoT Ecosystem */}
         <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
           <div className="flex items-center space-x-2 mb-6">
             <Smartphone className="w-6 h-6 text-cyan-400" />
-            <h3 className="text-xl font-bold">Ecosystem Hub</h3>
+            <h3 className="text-xl font-bold">Mobile & IoT Hub</h3>
           </div>
           <div className="space-y-4">
-            <div className="flex items-center space-x-2 text-xs bg-slate-800 p-2 rounded">
-              <Globe className="w-3 h-3 text-cyan-400" />
-              <span className="text-slate-300">5G Network Mesh active</span>
+            <div className="flex items-center justify-between text-xs bg-slate-800 p-2 rounded border border-cyan-900/30">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                <span className="text-slate-300 font-medium">OS Sync Active</span>
+              </div>
+              <span className="text-cyan-400">v19.4.2</span>
             </div>
+
             <div className="grid grid-cols-2 gap-2">
-              <div className="bg-slate-800 p-2 rounded text-center">
-                <div className="text-xs text-slate-500">Subscribers</div>
-                <div className="text-sm font-mono text-cyan-400">1.2M</div>
+              <div className="bg-slate-800/50 p-2 rounded border border-slate-700">
+                <div className="flex items-center space-x-1 mb-1">
+                  <Smartphone className="w-3 h-3 text-indigo-400" />
+                  <span className="text-[10px] text-slate-500">iOS</span>
+                </div>
+                <div className="text-xs font-mono text-white">42% Traffic</div>
               </div>
-              <div className="bg-slate-800 p-2 rounded text-center">
-                <div className="text-xs text-slate-500">Coverage</div>
-                <div className="text-sm font-mono text-cyan-400">98.4%</div>
+              <div className="bg-slate-800/50 p-2 rounded border border-slate-700">
+                <div className="flex items-center space-x-1 mb-1">
+                  <Smartphone className="w-3 h-3 text-emerald-400" />
+                  <span className="text-[10px] text-slate-500">Android</span>
+                </div>
+                <div className="text-xs font-mono text-white">58% Traffic</div>
               </div>
             </div>
+
             <div className="space-y-2">
-              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <span className="text-xs">IoT Edge Nodes</span>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded group hover:bg-slate-800 transition-colors">
+                <div className="flex items-center space-x-2">
+                  <Wifi className="w-3 h-3 text-cyan-400" />
+                  <span className="text-xs">IoT Mesh Nodes</span>
+                </div>
                 <span className="text-xs font-mono text-white">12,402</span>
               </div>
               <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <span className="text-xs">Network Latency</span>
+                <div className="flex items-center space-x-2">
+                  <Zap className="w-3 h-3 text-amber-400" />
+                  <span className="text-xs">Edge Latency</span>
+                </div>
                 <span className="text-xs font-mono text-cyan-400">0.8ms</span>
               </div>
             </div>
-            <button className="w-full py-2 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-600/50 rounded-lg text-xs font-semibold text-cyan-400 transition-colors">
-              Operator Dashboard
-            </button>
+
+            <div className="pt-2">
+              <button className="w-full py-2 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-600/50 rounded-lg text-xs font-semibold text-cyan-400 transition-all flex items-center justify-center space-x-2">
+                <span>Fleet Management</span>
+                <ChevronRight className="w-3 h-3" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -452,6 +517,46 @@ const GuruTools = () => {
             <button className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-xs font-semibold transition-colors">
               New Product Sprint
             </button>
+          </div>
+        </div>
+
+        {/* Computer Products Tool */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
+          <div className="flex items-center space-x-2 mb-6">
+            <Monitor className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-bold">Device Matrix</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-slate-400 uppercase tracking-wider">Lab Testing Status</span>
+              <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30">Active</span>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                { name: "Workstation Z1", icon: Monitor, status: "Staging", color: "text-blue-400" },
+                { name: "Nexus Tablet", icon: Tablet, status: "Live", color: "text-emerald-400" },
+                { name: "Core Server", icon: HardDrive, status: "Uptime 99.9%", color: "text-purple-400" }
+              ].map((device, i) => (
+                <div key={i} className="flex items-center justify-between bg-slate-800/30 p-2 rounded border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer">
+                  <div className="flex items-center space-x-3">
+                    <device.icon className={cn("w-4 h-4", device.color)} />
+                    <span className="text-xs font-medium">{device.name}</span>
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-mono">{device.status}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-2">
+              <div className="flex justify-between text-[10px] text-slate-500 mb-1 px-1">
+                <span>Hardware Optimization</span>
+                <span>92%</span>
+              </div>
+              <div className="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                <div className="bg-blue-400 h-full w-[92%] rounded-full shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
+              </div>
+            </div>
           </div>
         </div>
 
