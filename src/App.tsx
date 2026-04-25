@@ -30,7 +30,9 @@ import {
   Radio,
   Brain,
   Signal,
-  Globe
+  Globe,
+  Box,
+  Palette
 } from 'lucide-react';
 import { cn } from './lib/utils';
 
@@ -301,10 +303,13 @@ const GuruTools = () => {
   const [scienceData, setScienceData] = useState<any>(null);
   const [agentsData, setAgentsData] = useState<any>(null);
   const [modelsData, setModelsData] = useState<any>(null);
+  const [design3dData, setDesign3dData] = useState<any>(null);
+
+  const API_BASE_URL = 'http://localhost:5000';
 
   const fetchTelecomStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/telecom/status');
+      const response = await fetch(`${API_BASE_URL}/api/telecom/status`);
       const data = await response.json();
       setTelecomData(data);
     } catch (error) {
@@ -314,7 +319,7 @@ const GuruTools = () => {
 
   const fetchAstroTelemetry = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/astro/telemetry');
+      const response = await fetch(`${API_BASE_URL}/api/astro/telemetry`);
       const data = await response.json();
       setAstroData(data);
     } catch (error) {
@@ -324,7 +329,7 @@ const GuruTools = () => {
 
   const fetchCyberThreatIntel = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/cyber/threat-intel');
+      const response = await fetch(`${API_BASE_URL}/api/cyber/threat-intel`);
       const data = await response.json();
       setCyberData(data);
     } catch (error) {
@@ -334,7 +339,7 @@ const GuruTools = () => {
 
   const fetchDataPipelineMetrics = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/data/pipeline-metrics');
+      const response = await fetch(`${API_BASE_URL}/api/data/pipeline-metrics`);
       const data = await response.json();
       setDataForgeData(data);
     } catch (error) {
@@ -344,7 +349,7 @@ const GuruTools = () => {
 
   const fetchAnalyticsRealtime = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/analytics/realtime');
+      const response = await fetch(`${API_BASE_URL}/api/analytics/realtime`);
       const data = await response.json();
       setAnalyticsData(data);
     } catch (error) {
@@ -354,7 +359,7 @@ const GuruTools = () => {
 
   const fetchScienceSimulation = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/science/simulation');
+      const response = await fetch(`${API_BASE_URL}/api/science/simulation`);
       const data = await response.json();
       setScienceData(data);
     } catch (error) {
@@ -364,7 +369,7 @@ const GuruTools = () => {
 
   const fetchAiAgents = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/ai/agents');
+      const response = await fetch(`${API_BASE_URL}/api/ai/agents`);
       const data = await response.json();
       setAgentsData(data);
     } catch (error) {
@@ -374,11 +379,21 @@ const GuruTools = () => {
 
   const fetchAiModels = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/ai/models');
+      const response = await fetch(`${API_BASE_URL}/api/ai/models`);
       const data = await response.json();
       setModelsData(data);
     } catch (error) {
       console.error('AI Models Error:', error);
+    }
+  };
+
+  const fetchDesign3dStatus = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/design/3d-nexus`);
+      const data = await response.json();
+      setDesign3dData(data);
+    } catch (error) {
+      console.error('Design 3D Status Error:', error);
     }
   };
 
@@ -388,7 +403,7 @@ const GuruTools = () => {
     setIsLoading(true);
     setAiResponse('');
     try {
-      const response = await fetch('http://localhost:5000/api/ai-strategist', {
+      const response = await fetch(`${API_BASE_URL}/api/ai-strategist`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1185,6 +1200,54 @@ const GuruTools = () => {
             </div>
             <button className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-xs font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]">
               Initiate Model Training
+            </button>
+          </div>
+        </div>
+
+        {/* Design & 3D Nexus */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Box className="w-6 h-6 text-indigo-400" />
+              <h3 className="text-xl font-bold">Design & 3D Nexus</h3>
+            </div>
+            <button onClick={fetchDesign3dStatus} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-indigo-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="bg-slate-800/40 p-3 rounded-lg border border-slate-700">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-slate-500 uppercase font-bold">AR/VR Compatibility</span>
+                <span className="text-xs font-mono text-indigo-400">{design3dData?.ar_vr_compatibility || '99.2%'}</span>
+              </div>
+              <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div className="bg-indigo-500 h-full transition-all duration-500" style={{ width: design3dData?.ar_vr_compatibility || '99.2%' }} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Active Renders</span>
+                <span className="text-sm font-bold text-white">{design3dData?.active_renders || '154'}</span>
+              </div>
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">FR Ecosystem</span>
+                <span className="text-sm font-bold text-emerald-400">{design3dData?.fr_ecosystem_status || 'Scaling'}</span>
+              </div>
+            </div>
+            <div className="p-2 rounded bg-slate-800/30 flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Palette className="w-3 h-3 text-indigo-400" />
+                <span className="text-xs text-slate-300">Mesh Optimization</span>
+              </div>
+              <span className="text-xs font-mono text-white">{design3dData?.mesh_optimization || 'Adaptive'}</span>
+            </div>
+            <div className="flex items-center justify-between px-1">
+              <span className="text-[10px] text-slate-500">Realtime Sync</span>
+              <span className="text-[10px] font-mono text-emerald-400">{design3dData?.realtime_sync || '0.4ms'}</span>
+            </div>
+            <button className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-xs font-bold transition-all shadow-[0_0_15px_rgba(79,70,229,0.2)]">
+              Enhance Ecosystem
             </button>
           </div>
         </div>
