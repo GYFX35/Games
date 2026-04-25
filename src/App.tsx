@@ -299,6 +299,8 @@ const GuruTools = () => {
   const [dataForgeData, setDataForgeData] = useState<any>(null);
   const [analyticsData, setAnalyticsData] = useState<any>(null);
   const [scienceData, setScienceData] = useState<any>(null);
+  const [agentsData, setAgentsData] = useState<any>(null);
+  const [modelsData, setModelsData] = useState<any>(null);
 
   const fetchTelecomStatus = async () => {
     try {
@@ -357,6 +359,26 @@ const GuruTools = () => {
       setScienceData(data);
     } catch (error) {
       console.error('Science Simulation Error:', error);
+    }
+  };
+
+  const fetchAiAgents = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/ai/agents');
+      const data = await response.json();
+      setAgentsData(data);
+    } catch (error) {
+      console.error('AI Agents Error:', error);
+    }
+  };
+
+  const fetchAiModels = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/ai/models');
+      const data = await response.json();
+      setModelsData(data);
+    } catch (error) {
+      console.error('AI Models Error:', error);
     }
   };
 
@@ -1086,6 +1108,83 @@ const GuruTools = () => {
             </div>
             <button className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-xs font-bold transition-all">
               Launch Quantum Simulation
+            </button>
+          </div>
+        </div>
+
+        {/* AI Agent Nexus */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <User className="w-6 h-6 text-indigo-400" />
+              <h3 className="text-xl font-bold">AI Agent Nexus</h3>
+            </div>
+            <button onClick={fetchAiAgents} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-indigo-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="bg-slate-800/40 p-3 rounded-lg border border-slate-700">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-slate-500 uppercase font-bold">Swarm Cohesion</span>
+                <span className="text-xs font-mono text-indigo-400">{agentsData?.swarm_cohesion || '98.2%'}</span>
+              </div>
+              <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div className="bg-indigo-500 h-full transition-all duration-500" style={{ width: agentsData?.swarm_cohesion || '98.2%' }} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Active Agents</span>
+                <span className="text-sm font-bold text-white">{agentsData?.active_agents?.toLocaleString() || '12,540'}</span>
+              </div>
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Global Reach</span>
+                <span className="text-sm font-bold text-emerald-400">{agentsData?.global_reach || '142 countries'}</span>
+              </div>
+            </div>
+            <div className="p-2 rounded bg-slate-800/30 flex items-center justify-between">
+              <span className="text-xs text-slate-300">Autonomous Tasks</span>
+              <span className="text-xs font-mono text-white">{agentsData?.autonomous_tasks?.toLocaleString() || '84,291'}</span>
+            </div>
+            <button className="w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-600/50 rounded-lg text-xs font-semibold text-indigo-400 transition-all">
+              Deploy Agent Swarm
+            </button>
+          </div>
+        </div>
+
+        {/* Model Dev Forge */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Layers className="w-6 h-6 text-emerald-400" />
+              <h3 className="text-xl font-bold">Model Dev Forge</h3>
+            </div>
+            <button onClick={fetchAiModels} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-emerald-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Avg. Accuracy</span>
+              <span className="text-emerald-400 font-mono">{modelsData?.avg_accuracy || '94.8%'}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+              <span className="text-slate-400">Total Parameters</span>
+              <span className="text-white font-mono">{modelsData?.total_parameters || '1.2 Trillion'}</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Training Jobs</span>
+                <span className="text-sm font-bold text-white">{modelsData?.training_jobs || '42'}</span>
+              </div>
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Deployment</span>
+                <span className="text-sm font-bold text-emerald-400">{modelsData?.deployment_status || 'Stable'}</span>
+              </div>
+            </div>
+            <button className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-xs font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+              Initiate Model Training
             </button>
           </div>
         </div>
