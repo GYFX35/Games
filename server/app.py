@@ -119,6 +119,27 @@ def design_3d_nexus():
         'realtime_sync': '0.4ms'
     })
 
+@app.route('/api/os/status', methods=['GET'])
+def os_status():
+    return jsonify({
+        'windows': {
+            'instances': 452,
+            'avg_cpu': '32%',
+            'status': 'Optimal'
+        },
+        'macos': {
+            'instances': 128,
+            'avg_cpu': '18%',
+            'status': 'Secure'
+        },
+        'linux': {
+            'instances': 1024,
+            'avg_cpu': '45%',
+            'status': 'High Performance'
+        },
+        'global_sync': 'Active'
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'healthy', 'google_api_configured': model is not None})

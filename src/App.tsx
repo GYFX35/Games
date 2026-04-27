@@ -304,6 +304,7 @@ const GuruTools = () => {
   const [agentsData, setAgentsData] = useState<any>(null);
   const [modelsData, setModelsData] = useState<any>(null);
   const [design3dData, setDesign3dData] = useState<any>(null);
+  const [osData, setOsData] = useState<any>(null);
 
   const API_BASE_URL = 'http://localhost:5000';
 
@@ -394,6 +395,16 @@ const GuruTools = () => {
       setDesign3dData(data);
     } catch (error) {
       console.error('Design 3D Status Error:', error);
+    }
+  };
+
+  const fetchOsStatus = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/os/status`);
+      const data = await response.json();
+      setOsData(data);
+    } catch (error) {
+      console.error('OS Status Error:', error);
     }
   };
 
@@ -1248,6 +1259,46 @@ const GuruTools = () => {
             </div>
             <button className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-xs font-bold transition-all shadow-[0_0_15px_rgba(79,70,229,0.2)]">
               Enhance Ecosystem
+            </button>
+          </div>
+        </div>
+
+        {/* OS SuperHub */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Layers className="w-6 h-6 text-blue-500" />
+              <h3 className="text-xl font-bold">OS SuperHub</h3>
+            </div>
+            <button onClick={fetchOsStatus} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-blue-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              {[
+                { name: 'Windows', instances: osData?.windows?.instances || 452, cpu: osData?.windows?.avg_cpu || '32%', color: 'text-blue-400' },
+                { name: 'macOS', instances: osData?.macos?.instances || 128, cpu: osData?.macos?.avg_cpu || '18%', color: 'text-indigo-400' },
+                { name: 'Linux', instances: osData?.linux?.instances || 1024, cpu: osData?.linux?.avg_cpu || '45%', color: 'text-orange-400' }
+              ].map((os) => (
+                <div key={os.name} className="flex items-center justify-between bg-slate-800/40 p-2 rounded border border-slate-700/50">
+                  <div className="flex items-center space-x-2">
+                    <span className={cn("text-xs font-bold", os.color)}>{os.name}</span>
+                    <span className="text-[10px] text-slate-500">{os.instances.toLocaleString()} nodes</span>
+                  </div>
+                  <span className="text-xs font-mono text-white">{os.cpu} CPU</span>
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-between px-1">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Global Sync</span>
+              </div>
+              <span className="text-[10px] font-mono text-emerald-400">{osData?.global_sync || 'Active'}</span>
+            </div>
+            <button className="w-full py-2 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-600/50 rounded-lg text-xs font-semibold text-blue-400 transition-all">
+              Initialize OS Clusters
             </button>
           </div>
         </div>
