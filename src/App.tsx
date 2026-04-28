@@ -305,6 +305,8 @@ const GuruTools = () => {
   const [modelsData, setModelsData] = useState<any>(null);
   const [design3dData, setDesign3dData] = useState<any>(null);
   const [osData, setOsData] = useState<any>(null);
+  const [cardsData, setCardsData] = useState<any>(null);
+  const [financeBlockchainData, setFinanceBlockchainData] = useState<any>(null);
 
   const API_BASE_URL = 'http://localhost:5000';
 
@@ -405,6 +407,26 @@ const GuruTools = () => {
       setOsData(data);
     } catch (error) {
       console.error('OS Status Error:', error);
+    }
+  };
+
+  const fetchFinanceCards = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/finance/cards`);
+      const data = await response.json();
+      setCardsData(data);
+    } catch (error) {
+      console.error('Finance Cards Error:', error);
+    }
+  };
+
+  const fetchFinanceBlockchain = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/finance/blockchain`);
+      const data = await response.json();
+      setFinanceBlockchainData(data);
+    } catch (error) {
+      console.error('Finance Blockchain Error:', error);
     }
   };
 
@@ -796,37 +818,44 @@ const GuruTools = () => {
         </div>
 
         {/* Payments Tool */}
-        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
-          <div className="flex items-center space-x-2 mb-6">
-            <CreditCard className="w-6 h-6 text-orange-400" />
-            <h3 className="text-xl font-bold">PayNexus</h3>
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <CreditCard className="w-6 h-6 text-orange-400" />
+              <h3 className="text-xl font-bold">PayNexus</h3>
+            </div>
+            <button onClick={fetchFinanceCards} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-orange-400" />
+            </button>
           </div>
           <div className="space-y-4">
-            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
-              <span className="text-slate-400">Gateway Status</span>
-              <span className="text-orange-400 font-mono">All Systems Nominal</span>
-            </div>
-            <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
-              <span className="text-slate-400">Success Rate</span>
-              <span className="text-white font-mono">99.98%</span>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <div className="flex items-center space-x-2">
-                  <Zap className="w-3 h-3 text-orange-400" />
-                  <span className="text-xs">Instant Payouts</span>
-                </div>
-                <span className="text-[10px] bg-orange-400/20 text-orange-400 px-1.5 py-0.5 rounded">Active</span>
+            <div className="bg-slate-800/40 p-3 rounded-lg border border-slate-700">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-slate-500 uppercase font-bold">Virtual Cards Dev</span>
+                <span className="text-xs font-mono text-orange-400">{cardsData?.active_virtual_cards?.toLocaleString() || '84,291'} Active</span>
               </div>
-              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <div className="flex items-center space-x-2">
-                  <ShieldCheck className="w-3 h-3 text-orange-400" />
-                  <span className="text-xs">Fraud Detection</span>
-                </div>
-                <span className="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded">AI Monitoring</span>
+              <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div className="bg-orange-500 h-full transition-all duration-500" style={{ width: '85%' }} />
               </div>
             </div>
-            <button className="w-full py-2 mt-2 bg-orange-600 hover:bg-orange-700 rounded-lg text-xs font-semibold transition-colors">
+
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Issuance Latency</span>
+                <span className="text-sm font-bold text-white">{cardsData?.issuance_latency || '240ms'}</span>
+              </div>
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Fraud Prevention</span>
+                <span className="text-sm font-bold text-emerald-400">{cardsData?.fraud_prevention_rate || '99.99%'}</span>
+              </div>
+            </div>
+
+            <div className="p-2 rounded bg-slate-800/30 flex items-center justify-between">
+              <span className="text-xs text-slate-300">Compliance Standard</span>
+              <span className="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded uppercase">{cardsData?.security_standard || 'PCI-DSS v4.0'}</span>
+            </div>
+
+            <button className="w-full py-2 bg-orange-600 hover:bg-orange-700 rounded-lg text-xs font-semibold transition-colors">
               Configure Payment Rails
             </button>
           </div>
@@ -834,10 +863,15 @@ const GuruTools = () => {
 
 
         {/* Finance Tool */}
-        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700">
-          <div className="flex items-center space-x-2 mb-6">
-            <Landmark className="w-6 h-6 text-emerald-400" />
-            <h3 className="text-xl font-bold">FinTech Engine</h3>
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Landmark className="w-6 h-6 text-emerald-400" />
+              <h3 className="text-xl font-bold">FinTech Engine</h3>
+            </div>
+            <button onClick={fetchFinanceBlockchain} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-emerald-400" />
+            </button>
           </div>
           <div className="space-y-4">
             <div className="flex items-baseline space-x-2">
@@ -848,20 +882,20 @@ const GuruTools = () => {
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-[10px] text-slate-500 uppercase tracking-wider">
-                <span>Core Banking Status</span>
-                <span className="text-emerald-400 font-mono">Synchronized</span>
+                <span>Blockchain Ledger</span>
+                <span className="text-emerald-400 font-mono">{financeBlockchainData?.settlement_speed ? 'Optimized' : 'Synchronized'}</span>
               </div>
               <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <span className="text-xs">Transaction Vol.</span>
-                <span className="text-xs font-mono text-white">4.2k / sec</span>
+                <span className="text-xs">Settlement Speed</span>
+                <span className="text-xs font-mono text-emerald-400">{financeBlockchainData?.settlement_speed || '1.2s'}</span>
               </div>
               <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <span className="text-xs">KYC/AML Compliance</span>
-                <span className="text-xs font-mono text-emerald-400">99.9%</span>
+                <span className="text-xs">Active Smart Contracts</span>
+                <span className="text-xs font-mono text-white">{financeBlockchainData?.smart_contracts_active?.toLocaleString() || '1,420'}</span>
               </div>
               <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
-                <span className="text-xs">Yield Aggregator</span>
-                <span className="text-xs font-mono text-white">420.5 ETH</span>
+                <span className="text-xs">TPS Capacity</span>
+                <span className="text-xs font-mono text-white">{financeBlockchainData?.tps_capacity?.toLocaleString() || '65,000'}</span>
               </div>
             </div>
             <div className="pt-2">

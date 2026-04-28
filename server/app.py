@@ -140,6 +140,26 @@ def os_status():
         'global_sync': 'Active'
     })
 
+@app.route('/api/finance/cards', methods=['GET'])
+def finance_cards():
+    return jsonify({
+        'active_virtual_cards': 84291,
+        'issuance_latency': '240ms',
+        'security_standard': 'PCI-DSS v4.0',
+        'fraud_prevention_rate': '99.99%',
+        'total_transactions': 1240921
+    })
+
+@app.route('/api/finance/blockchain', methods=['GET'])
+def finance_blockchain():
+    return jsonify({
+        'ledger_nodes': 256,
+        'settlement_speed': '1.2s',
+        'smart_contracts_active': 1420,
+        'tps_capacity': 65000,
+        'cross_border_channels': 84
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'healthy', 'google_api_configured': model is not None})
