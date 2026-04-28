@@ -38,7 +38,7 @@ import { cn } from './lib/utils';
 
 // --- Types ---
 
-type View = 'hero' | 'saas' | 'itaas' | 'paas' | 'iaas' | 'cloud' | 'games' | 'research' | 'players' | 'guru';
+type View = 'hero' | 'saas' | 'itaas' | 'paas' | 'iaas' | 'cloud' | 'web3' | 'games' | 'research' | 'players' | 'guru';
 
 // --- Components ---
 
@@ -51,6 +51,7 @@ const Navbar = ({ activeView, setView }: { activeView: View, setView: (v: View) 
     { id: 'paas', label: 'PaaS', icon: Database },
     { id: 'iaas', label: 'IaaS', icon: Cloud },
     { id: 'cloud', label: 'Cloud', icon: Cloud },
+    { id: 'web3', label: 'Web3', icon: Box },
     { id: 'games', label: 'Games', icon: Gamepad2 },
     { id: 'research', label: 'Research', icon: Search },
     { id: 'players', label: 'Players', icon: User },
@@ -238,6 +239,12 @@ const cloudContent = [
   { title: "DevSecOps Pipeline", desc: "Automated CI/CD with integrated security scanning and compliance checks.", icon: Search, tags: ["DevOps", "Security"] }
 ];
 
+const web3Content = [
+  { title: "Smart Contract Auditor", desc: "AI-powered automated security audits for Solidity and Rust contracts.", icon: ShieldCheck, tags: ["Security", "Web3"] },
+  { title: "Multi-Chain Deployer", desc: "One-click deployment to Ethereum, Solana, and Layer 2 networks.", icon: Layers, tags: ["Infrastructure", "Deployment"] },
+  { title: "Oracle Bridge", desc: "High-fidelity real-world data feeds for your decentralized applications.", icon: Radio, tags: ["Data", "Oracles"] }
+];
+
 const GamesSection = () => (
   <div className="bg-slate-50 py-16">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -307,8 +314,25 @@ const GuruTools = () => {
   const [osData, setOsData] = useState<any>(null);
   const [cardsData, setCardsData] = useState<any>(null);
   const [financeBlockchainData, setFinanceBlockchainData] = useState<any>(null);
+  const [web3Data, setWeb3Data] = useState<any>(null);
+  const [isAuditing, setIsAuditing] = useState(false);
 
   const API_BASE_URL = 'http://localhost:5000';
+
+  const performMockAudit = () => {
+    setIsAuditing(true);
+    setTimeout(() => setIsAuditing(false), 3000);
+  };
+
+  const fetchWeb3Ecosystem = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/web3/ecosystem`);
+      const data = await response.json();
+      setWeb3Data(data);
+    } catch (error) {
+      console.error('Web3 Ecosystem Error:', error);
+    }
+  };
 
   const fetchTelecomStatus = async () => {
     try {
@@ -1337,6 +1361,71 @@ const GuruTools = () => {
           </div>
         </div>
 
+        {/* Web3 Ecosystem Forge */}
+        <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-700 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-2">
+              <Box className="w-6 h-6 text-fuchsia-400" />
+              <h3 className="text-xl font-bold">Web3 Forge</h3>
+            </div>
+            <button onClick={fetchWeb3Ecosystem} className="p-1 hover:bg-slate-800 rounded transition-colors">
+              <Zap className="w-4 h-4 text-fuchsia-400" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="bg-slate-800/40 p-3 rounded-lg border border-slate-700">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-slate-500 uppercase font-bold">Network Health</span>
+                <span className="text-xs font-mono text-fuchsia-400">{web3Data?.network_health || '99.9%'}</span>
+              </div>
+              <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div className="bg-fuchsia-500 h-full transition-all duration-500" style={{ width: web3Data?.network_health || '99.9%' }} />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">Gas Price</span>
+                <span className="text-sm font-bold text-white">{web3Data?.gas_price_gwei || '14.2'} Gwei</span>
+              </div>
+              <div className="flex flex-col bg-slate-800/30 p-2 rounded">
+                <span className="text-[10px] text-slate-500">IPFS Nodes</span>
+                <span className="text-sm font-bold text-emerald-400">{web3Data?.ipfs_nodes?.toLocaleString() || '8,420'}</span>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">Active Wallets</span>
+                <span className="text-xs font-mono text-fuchsia-400">{web3Data?.active_wallets?.toLocaleString() || '842,910'}</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">Deployed Contracts</span>
+                <span className="text-xs font-mono text-white">{web3Data?.deployed_contracts?.toLocaleString() || '12,409'}</span>
+              </div>
+              <div className="flex items-center justify-between bg-slate-800/50 p-2 rounded">
+                <span className="text-xs">Cross-Chain Bridges</span>
+                <span className="text-xs font-mono text-white">{web3Data?.cross_chain_bridges || '12'}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={performMockAudit}
+              disabled={isAuditing}
+              className="w-full py-2 bg-fuchsia-600/20 hover:bg-fuchsia-600/30 border border-fuchsia-600/50 rounded-lg text-xs font-semibold text-fuchsia-400 transition-all flex items-center justify-center space-x-2"
+            >
+              {isAuditing ? (
+                <>
+                  <div className="h-3 w-3 border-2 border-fuchsia-400/30 border-t-fuchsia-400 rounded-full animate-spin" />
+                  <span>Scanning...</span>
+                </>
+              ) : (
+                <span>Launch Smart Contract Auditor</span>
+              )}
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -1391,6 +1480,14 @@ export default function App() {
             title="Cloud Computing & Dev Tools"
             subtitle="Next-generation cloud infrastructure and development environments."
             items={cloudContent}
+          />
+        )}
+
+        {view === 'web3' && (
+          <Section
+            title="Web3 Ecosystem Development"
+            subtitle="Advanced tools for decentralized applications and blockchain infrastructure."
+            items={web3Content}
           />
         )}
 

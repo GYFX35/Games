@@ -160,6 +160,17 @@ def finance_blockchain():
         'cross_border_channels': 84
     })
 
+@app.route('/api/web3/ecosystem', methods=['GET'])
+def web3_ecosystem():
+    return jsonify({
+        'deployed_contracts': 12409,
+        'gas_price_gwei': 14.2,
+        'ipfs_nodes': 8420,
+        'network_health': '99.9%',
+        'active_wallets': 1240921,
+        'cross_chain_bridges': 12
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'healthy', 'google_api_configured': model is not None})
